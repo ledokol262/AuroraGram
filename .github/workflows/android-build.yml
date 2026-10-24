@@ -1,4 +1,3 @@
-
 name: AuroraGram Android Build
 
 on:
@@ -6,16 +5,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - '.github/workflows/android-build.yml'
-      - 'TMessagesProj/**'
-      - 'TMessagesProj_App/**'
-      - 'build.gradle'
-      - 'settings.gradle'
-      - 'gradle.properties'
-      - 'gradle/**'
-      - 'run'
-      - 'bin/**'
 
 permissions:
   contents: read
@@ -47,12 +36,15 @@ jobs:
       - name: Set up Android SDK
         uses: android-actions/setup-android@v3
 
+      - name: Accept Android SDK licenses
+        run: yes | sdkmanager --licenses || true
+
       - name: Install Android components
         run: |
           sdkmanager \
             "platform-tools" \
-            "platforms;android-33" \
-            "build-tools;33.0.0" \
+            "platforms;android-36" \
+            "build-tools;36.0.0" \
             "ndk;27.2.12479018" \
             "cmake;3.18.1" \
             "cmake;3.22.1"
@@ -61,21 +53,25 @@ jobs:
         env:
           APP_ID: ${{ secrets.TELEGRAM_APP_ID }}
           APP_HASH: ${{ secrets.TELEGRAM_APP_HASH }}
+        shell: bash
         run: |
-          test -n "$APP_ID" || {
-            echo "Missing TELEGRAM_APP_ID secret"
-            exit 1
-          }
-          test -n "$APP_HASH" || {
-            echo "Missing TELEGRAM_APP_HASH secret"
-            exit 1
-          }
           {
             echo "sdk.dir=$ANDROID_HOME"
             echo "ndk.dir=$ANDROID_HOME/ndk/27.2.12479018"
-            echo "TELEGRAM_APP_ID=$APP_ID"
-            echo "TELEGRAM_APP_HASH=$APP_HASH"
           } > local.properties
+
+          if [[ -n "$APP_ID" && -n "$APP_HASH" ]]; then
+            {
+              echo "TELEGRAM_APP_ID=$APP_ID"
+              echo "TELEGRAM_APP_HASH=$APP_HASH"
+            } >> local.properties
+            echo "Using the repository's configured Telegram API credentials from Actions secrets."
+          elif [[ -z "$APP_ID" && -z "$APP_HASH" ]]; then
+            echo "::warning::Telegram API secrets are not configured; the build will use the fallback values already present in the source."
+          else
+            echo "::error::Set both TELEGRAM_APP_ID and TELEGRAM_APP_HASH secrets, or leave both unset."
+            exit 1
+          fi
 
       - name: Prepare native dependencies
         run: ./run init libs
@@ -84,13 +80,13 @@ jobs:
         run: ./run libs native
 
       - name: Build debug APK
-        run: ./gradlew --no-daemon assembleDebug
+        run: ./gradlew --no-daemon :TMessagesProj:assembleDebug
 
       - name: Upload APK
         if: success()
         uses: actions/upload-artifact@v4
         with:
           name: AuroraGram-debug
-          path: '**/build/outputs/apk/**/*.apk'
+          path: TMessagesProj/build/outputs/apk/**/*.apk
           if-no-files-found: error
           retention-days: 7
