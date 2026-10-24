@@ -247,7 +247,8 @@ android {
             debuggable true
             jniDebuggable true
             multiDexEnabled true
-            signingConfig signingConfigs.release
+            // CI debug builds use Android's default debug keystore; release signing remains unchanged.
+            signingConfig signingConfigs.debug
         }
 
         release {
