@@ -165,7 +165,7 @@ android {
             } else {
                 enable true
                 reset()
-                universalApk false
+                universalApk true
                 if (!nativeTarget.isBlank()) {
                     include nativeTarget
                 } else {
@@ -310,7 +310,7 @@ android {
 
     applicationVariants.configureEach { variant ->
         variant.outputs.configureEach { output ->
-            String gramName = "Nagram"
+            String gramName = "AuroraGram"
             String first = String.format("%s-v%s(%s)", gramName, versionName, versionCode)
             String name = outputFileName.replace("TMessagesProj", first)
             name = name.replace("-release", "")
