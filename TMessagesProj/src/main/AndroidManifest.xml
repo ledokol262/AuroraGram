@@ -138,7 +138,7 @@
         android:backupAgent=".BackupAgent"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher_nagram"
-        android:label="@string/NekoX"
+        android:label="AuroraGram"
         android:largeHeap="true"
         android:manageSpaceActivity="org.telegram.ui.ExternalActionActivity"
         android:networkSecurityConfig="@xml/network_security_config"
