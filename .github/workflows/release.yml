@@ -19,7 +19,6 @@ jobs:
     strategy:
       matrix:
         flavor:
-          - armeabi-v7a
           - arm64-v8a
     steps:
       - name: Checkout
@@ -72,12 +71,6 @@ jobs:
       - name: Fetch Status
         run: |
           sed -i 's/\/\///g' settings.gradle
-      - name: Native Cache (armeabi-v7a)
-        uses: actions/cache@v6
-        with:
-          path: |
-            TMessagesProj/src/main/libs
-          key: ${{ hashFiles('TMessagesProj/jni/**') }}-armeabi-v7a
       - name: Native Cache (arm64-v8a)
         uses: actions/cache@v6
         with:
@@ -163,8 +156,7 @@ jobs:
             exit 0
           fi
           mkdir "$RUNNER_TEMP/channel"
-          find artifacts \( -name '*arm64-v8a.apk' -o -name '*armeabi-v7a.apk' \) \
-            -exec cp {} "$RUNNER_TEMP/channel/" \;
+          find artifacts -name '*arm64-v8a.apk' -exec cp {} "$RUNNER_TEMP/channel/" \;
           ls -l "$RUNNER_TEMP/channel"
           python bin/scripts/apk_version.py "$RUNNER_TEMP"/channel/*arm64-v8a.apk > "$RUNNER_TEMP/apk-version"
           cat "$RUNNER_TEMP/apk-version" >> "$GITHUB_OUTPUT"
@@ -219,8 +211,7 @@ jobs:
           notes-en-file: ${{ steps.post.outputs.notes_en }}
           files-title: 下载
           files: |
-            *arm64-v8a.apk | arm64-v8a · 大多数设备
-            *armeabi-v7a.apk | armeabi-v7a · 旧设备
+            *arm64-v8a.apk | arm64-v8a · большинство устройств
           # The release is tagged with the version code.
           buttons: |
             *GitHub Release=${{ github.server_url }}/${{ github.repository }}/releases/tag/${{ steps.post.outputs.build }}
