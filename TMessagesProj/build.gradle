@@ -165,7 +165,7 @@ android {
             } else {
                 enable true
                 reset()
-                universalApk true
+                universalApk false
                 if (!nativeTarget.isBlank()) {
                     include nativeTarget
                 } else {
