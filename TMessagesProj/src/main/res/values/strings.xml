@@ -1914,6 +1914,7 @@
     <string name="UpdateContactsTitle">Update contacts?</string>
     <string name="UpdateContactsMessage">Telegram has detected many unsynced contacts, would you like to sync them now? Choose \'OK\' if you\'re using your own device, SIM card and Google account.</string>
     <string name="SortedByName">Sorted by name</string>
+    <string name="ThreeLinesChatList">Three-line chat list</string>
     <string name="SortedByLastSeen">Sorted by last seen time</string>
     <string name="AddContactByPhone">Add %1$s</string>
     <string name="PhoneNumberSearch">Phone number</string>
