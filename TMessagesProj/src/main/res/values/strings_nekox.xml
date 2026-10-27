@@ -86,6 +86,7 @@
     <string name="SortByUnmuted">Sort By Unmuted</string>
     <string name="SortByUser">Sort By User</string>
     <string name="SortByContacts">Sort By Contacts</string>
+    <string name="SortOldestFirst">Oldest first</string>
     <string name="NekoXPushService">Nagram Push Service</string>
     <string name="EnablePushAlert">Please enable "NekoX Push Service"</string>
     <string name="DisablePushAlert">Please disable "NekoX Push Service"</string>

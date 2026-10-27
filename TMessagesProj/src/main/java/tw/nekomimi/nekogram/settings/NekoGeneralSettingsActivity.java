@@ -201,6 +201,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
             add(new ConfigCellTextCheck(NekoConfig.sortByUser, null, LocaleController.getString(R.string.SortByUser)));
             add(new ConfigCellTextCheck(NekoConfig.sortByContacts, null, LocaleController.getString(R.string.SortByContacts)));
             add(new ConfigCellTextCheck(NekoConfig.sortByName, null, LocaleController.getString(R.string.SortedByName)));
+            add(new ConfigCellTextCheck(NekoConfig.sortByOldest, null, LocaleController.getString(R.string.SortOldestFirst)));
         }}));
     }));
     private final AbstractConfigCell mediaPreviewRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.mediaPreview));

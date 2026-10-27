@@ -1577,10 +1577,18 @@ public class MessagesController extends BaseController implements NotificationCe
         final MediaDataController mediaDataController = getMediaDataController();
         final long date1 = DialogObject.getLastMessageOrDraftDate(dialog1, mediaDataController.getDraft(dialog1.id, 0));
         final long date2 = DialogObject.getLastMessageOrDraftDate(dialog2, mediaDataController.getDraft(dialog2.id, 0));
-        if (date1 < date2) {
-            return 1;
-        } else if (date1 > date2) {
-            return -1;
+        if (NekoConfig.sortByOldest.Bool()) {
+            if (date1 < date2) {
+                return -1;
+            } else if (date1 > date2) {
+                return 1;
+            }
+        } else {
+            if (date1 < date2) {
+                return 1;
+            } else if (date1 > date2) {
+                return -1;
+            }
         }
 
         return 0;
@@ -22805,7 +22813,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 dialogs.clear();
                 dialogsForward.clear();
                 try {
-                    if (NekoConfig.sortByName.Bool()) {
+                    if (NekoConfig.sortByName.Bool() || NekoConfig.sortByOldest.Bool()) {
                         Collections.sort(allDialogs, dialogComparator);
                     } else {
                         Collections.sort(allDialogs, dialogDateComparator);
