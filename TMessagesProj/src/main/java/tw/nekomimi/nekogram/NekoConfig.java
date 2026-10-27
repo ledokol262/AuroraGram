@@ -407,6 +407,8 @@ public class NekoConfig {
 
         if (preferences.contains("sort_by_name"))
             sortByName.setConfigBool(preferences.getBoolean("sort_by_name", false));
+        if (preferences.contains("use_three_lines_layout"))
+            useThreeLinesLayout.setConfigBool(preferences.getBoolean("use_three_lines_layout", false));
         if (preferences.contains("sort_by_oldest"))
             sortByOldest.setConfigBool(preferences.getBoolean("sort_by_oldest", false));
 
