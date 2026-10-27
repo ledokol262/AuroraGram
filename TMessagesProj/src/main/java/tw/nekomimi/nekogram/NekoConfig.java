@@ -104,6 +104,7 @@ public class NekoConfig {
     public static ConfigItem sortByUnmuted = addConfig("sort_by_unmuted", configTypeBool, true);
     public static ConfigItem sortByUser = addConfig("sort_by_user", configTypeBool, true);
     public static ConfigItem sortByContacts = addConfig("sort_by_contacts", configTypeBool, true);
+    public static ConfigItem sortByName = addConfig("sort_by_name", configTypeBool, false);
 
     public static ConfigItem disableUndo = addConfig("DisableUndo", configTypeBool, false);
 
