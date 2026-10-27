@@ -16,7 +16,6 @@ jobs:
     strategy:
       matrix:
         flavor:
-          - armeabi-v7a
           - arm64-v8a
     steps:
       - name: Checkout
@@ -69,12 +68,6 @@ jobs:
       - name: Fetch Status
         run: |
           sed -i 's/\/\///g' settings.gradle
-      - name: Native Cache (armeabi-v7a)
-        uses: actions/cache@v6
-        with:
-          path: |
-            TMessagesProj/src/main/libs
-          key: ${{ hashFiles('TMessagesProj/jni/**') }}-armeabi-v7a
       - name: Native Cache (arm64-v8a)
         uses: actions/cache@v6
         with:
@@ -110,6 +103,7 @@ jobs:
         run: |
           export LOCAL_PROPERTIES="${{ secrets.LOCAL_PROPERTIES }}"
           export SENTRY_AUTH_TOKEN="${{ secrets.SENTRY_AUTH_TOKEN }}"
+          export NATIVE_TARGET=arm64-v8a
           ./gradlew TMessagesProj:assembleRelease --build-cache --no-configuration-cache
 
           APK=$(find TMessagesProj/build/outputs/apk -name '*arm64-v8a*.apk')
@@ -149,7 +143,7 @@ jobs:
             exit 0
           fi
           mkdir "$RUNNER_TEMP/channel"
-          find artifacts \( -name '*arm64-v8a.apk' -o -name '*armeabi-v7a.apk' \) \
+          find artifacts -name '*arm64-v8a.apk' \\
             -exec cp {} "$RUNNER_TEMP/channel/" \;
           ls -l "$RUNNER_TEMP/channel"
           python bin/scripts/apk_version.py "$RUNNER_TEMP"/channel/*arm64-v8a.apk > "$RUNNER_TEMP/apk-version"
@@ -182,5 +176,4 @@ jobs:
           commits-file: ${{ runner.temp }}/channel-commits.json
           files: |
             *arm64-v8a.apk | arm64-v8a · 大多数设备
-            *armeabi-v7a.apk | armeabi-v7a · 旧设备
           buttons: Commit=${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}
