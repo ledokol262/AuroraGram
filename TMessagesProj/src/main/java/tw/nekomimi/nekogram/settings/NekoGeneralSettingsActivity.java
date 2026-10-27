@@ -482,7 +482,6 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                     }
                 }
             } else if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
-            if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
                 ConnectionsManager.ipStrategy = -1;
                 for (int a : SharedConfig.activeAccounts) {
                     if (UserConfig.getInstance(a).isClientActivated()) {
