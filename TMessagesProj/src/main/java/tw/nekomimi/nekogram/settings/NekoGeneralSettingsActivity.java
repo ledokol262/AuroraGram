@@ -475,7 +475,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
 
         // Cells: Set OnSettingChanged Callbacks
         cellGroup.callBackSettingsChanged = (key, newValue) -> {
-            if (key.equals(NekoConfig.sortByName.getKey()) || key.equals(NekoConfig.sortByOldest.getKey())) {
+            if (key.equals(NekoConfig.sortByName.getKey()) || key.equals(NekoConfig.sortByOldest.getKey()) || key.equals(NekoConfig.sortByUnread.getKey()) || key.equals(NekoConfig.sortByUnmuted.getKey()) || key.equals(NekoConfig.sortByUser.getKey()) || key.equals(NekoConfig.sortByContacts.getKey())) {
                 for (int account : SharedConfig.activeAccounts) {
                     if (UserConfig.getInstance(account).isClientActivated()) {
                         MessagesController.getInstance(account).sortDialogs(null);
