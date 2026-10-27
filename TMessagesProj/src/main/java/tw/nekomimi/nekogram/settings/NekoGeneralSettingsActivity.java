@@ -391,6 +391,11 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                 if (position == cellGroup.rows.indexOf(dialogListLayoutRow)) {
                     SharedConfig.setUseThreeLinesLayout(!SharedConfig.useThreeLinesLayout);
                     listAdapter.notifyItemChanged(position);
+                    for (int account : SharedConfig.activeAccounts) {
+                        if (UserConfig.getInstance(account).isClientActivated()) {
+                            NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.dialogsNeedReload);
+                        }
+                    }
                 } else if (position == cellGroup.rows.indexOf(pgpAppRow)) {
                     PopupBuilder builder = new PopupBuilder(view);
 
