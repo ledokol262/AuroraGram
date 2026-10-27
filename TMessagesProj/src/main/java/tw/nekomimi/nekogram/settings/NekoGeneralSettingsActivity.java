@@ -204,6 +204,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
             add(new ConfigCellTextCheck(NekoConfig.sortByOldest, null, LocaleController.getString(R.string.SortOldestFirst)));
         }}));
     }));
+    private final AbstractConfigCell dialogListLayoutRow = cellGroup.appendCell(new ConfigCellCustom("DialogListLayout", CellGroup.ITEM_TYPE_TEXT_SETTINGS_CELL, true));
     private final AbstractConfigCell mediaPreviewRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.mediaPreview));
     private final AbstractConfigCell showUserIconsInChatsListRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getShowUserIconsInChatsList()));
     private final AbstractConfigCell disableCommunityChatGroupingRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDisableCommunityChatGrouping()));
@@ -387,7 +388,10 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                     }
                 }
             } else if (a instanceof ConfigCellCustom) { // Custom OnClick
-                if (position == cellGroup.rows.indexOf(pgpAppRow)) {
+                if (position == cellGroup.rows.indexOf(dialogListLayoutRow)) {
+                    SharedConfig.setUseThreeLinesLayout(!SharedConfig.useThreeLinesLayout);
+                    listAdapter.notifyItemChanged(position);
+                } else if (position == cellGroup.rows.indexOf(pgpAppRow)) {
                     PopupBuilder builder = new PopupBuilder(view);
 
                     builder.addSubItem(0, LocaleController.getString("None", R.string.None));
@@ -736,7 +740,10 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
                     // Custom binds
                     if (holder.itemView instanceof TextSettingsCell) {
                         TextSettingsCell textCell = (TextSettingsCell) holder.itemView;
-                        if (position == cellGroup.rows.indexOf(translationProviderRow)) {
+                        if (position == cellGroup.rows.indexOf(dialogListLayoutRow)) {
+                            int layoutValue = SharedConfig.useThreeLinesLayout ? R.string.AuroraThreeLines : R.string.AuroraTwoLines;
+                            textCell.setTextAndValue(LocaleController.getString(R.string.AuroraDialogListLayout), LocaleController.getString(layoutValue), divider);
+                        } else if (position == cellGroup.rows.indexOf(translationProviderRow)) {
                             String value;
                             switch (NekoConfig.translationProvider.Int()) {
                                 case Translator.providerGoogle:
