@@ -82,6 +82,9 @@
     <string name="FilterNameUnmutedAndUnreadDescription">Только непрочитанные сообщения из включенных чатов</string>
     <string name="IgnoreMutedCount">Не считать приглушенные во вкладках</string>
     <string name="DialogsSettings">Настройки чатов</string>
+    <string name="AuroraDialogListLayout">Вид списка чатов</string>
+    <string name="AuroraTwoLines">Две строки</string>
+    <string name="AuroraThreeLines">Три строки</string>
     <string name="SortMenu">Сортировка чатов</string>
     <string name="SortByUnread">Сначала новые</string>
     <string name="SortByUnmuted">Сначала со звуком</string>
