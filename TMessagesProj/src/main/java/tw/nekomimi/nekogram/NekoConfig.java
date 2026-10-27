@@ -404,6 +404,11 @@ public class NekoConfig {
         if (preferences.contains("sort_by_contacts"))
             sortByContacts.setConfigBool(preferences.getBoolean("sort_by_contacts", true));
 
+        if (preferences.contains("sort_by_name"))
+            sortByName.setConfigBool(preferences.getBoolean("sort_by_name", false));
+        if (preferences.contains("sort_by_oldest"))
+            sortByOldest.setConfigBool(preferences.getBoolean("sort_by_oldest", false));
+
         if (preferences.contains("disable_undo"))
             disableUndo.setConfigBool(preferences.getBoolean("disable_undo", false));
 
