@@ -475,7 +475,12 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
         // Cells: Set OnSettingChanged Callbacks
         cellGroup.callBackSettingsChanged = (key, newValue) -> {
             if (key.equals(NekoConfig.sortByName.getKey())) {
-                getNotificationCenter().postNotificationName(NotificationCenter.dialogsNeedReload);
+                for (int account : SharedConfig.activeAccounts) {
+                    if (UserConfig.getInstance(account).isClientActivated()) {
+                        MessagesController.getInstance(account).sortDialogs(null);
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.dialogsNeedReload);
+                    }
+                }
             } else if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
             if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
                 ConnectionsManager.ipStrategy = -1;
