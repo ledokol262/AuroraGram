@@ -3,7 +3,9 @@
 #include "read_cert.h"
 #include "SHA1.h"
 
+#ifndef AURORAGRAM_ALLOW_CUSTOM_SIGNATURE
 static const char *SIGN = "3A0F57FE06485D0B90D0ACD990E3A30328E3988D";
+#endif
 
 extern "C" {
 int verifySign(JNIEnv *env) {
@@ -19,9 +21,26 @@ int verifySign(JNIEnv *env) {
     }
     std::string sign = read_certificate(fd);
     if (!more_check(fd, resourcePath)) {
+        close(fd);
         return JNI_ERR;
     }
     close(fd);
+
+    // The APK must still contain a readable v2 signing certificate.
+    // Android itself verifies the APK's cryptographic signature during installation.
+    if (sign.empty()) {
+        LOGE("Unable to read APK signing certificate");
+        return JNI_ERR;
+    }
+
+#ifdef AURORAGRAM_ALLOW_CUSTOM_SIGNATURE
+    // AuroraGram is a separately signed fork. Pinning the upstream Nagram certificate
+    // makes JNI_OnLoad return JNI_ERR for a locally signed APK, leaving every native
+    // ConnectionsManager method unavailable and preventing the app from starting.
+    // Keep the APK path and ownership checks above, but accept AuroraGram's own signer.
+    LOGI("AuroraGram: custom APK signer accepted; upstream Nagram certificate pin disabled");
+    return JNI_OK;
+#else
     std::string s = toolkit::SHA1::encode(sign);
     // 使用标准库算法将小写字母转换为大写字母
     for (char &c : s) {
@@ -40,5 +59,6 @@ int verifySign(JNIEnv *env) {
     }
     LOGE("签名校验失败");
     return JNI_ERR;
+#endif
 }
 }
