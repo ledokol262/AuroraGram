@@ -200,6 +200,8 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
             add(new ConfigCellTextCheck(NekoConfig.sortByUnmuted, null, LocaleController.getString(R.string.SortByUnmuted)));
             add(new ConfigCellTextCheck(NekoConfig.sortByUser, null, LocaleController.getString(R.string.SortByUser)));
             add(new ConfigCellTextCheck(NekoConfig.sortByContacts, null, LocaleController.getString(R.string.SortByContacts)));
+            add(new ConfigCellTextCheck(NekoConfig.sortByName, null, LocaleController.getString(R.string.SortedByName)));
+            add(new ConfigCellTextCheck(NekoConfig.sortByOldest, null, LocaleController.getString(R.string.SortOldestFirst)));
         }}));
     }));
     private final AbstractConfigCell mediaPreviewRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.mediaPreview));
@@ -473,7 +475,14 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
 
         // Cells: Set OnSettingChanged Callbacks
         cellGroup.callBackSettingsChanged = (key, newValue) -> {
-            if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
+            if (key.equals(NekoConfig.sortByName.getKey()) || key.equals(NekoConfig.sortByOldest.getKey())) {
+                for (int account : SharedConfig.activeAccounts) {
+                    if (UserConfig.getInstance(account).isClientActivated()) {
+                        MessagesController.getInstance(account).sortDialogs(null);
+                        NotificationCenter.getInstance(account).postNotificationName(NotificationCenter.dialogsNeedReload);
+                    }
+                }
+            } else if (key.equals(NaConfig.INSTANCE.getCustomIpStrategy().getKey())) {
                 ConnectionsManager.ipStrategy = -1;
                 for (int a : SharedConfig.activeAccounts) {
                     if (UserConfig.getInstance(a).isClientActivated()) {

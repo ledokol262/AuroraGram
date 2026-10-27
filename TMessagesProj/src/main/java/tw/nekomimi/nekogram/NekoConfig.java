@@ -104,6 +104,8 @@ public class NekoConfig {
     public static ConfigItem sortByUnmuted = addConfig("sort_by_unmuted", configTypeBool, true);
     public static ConfigItem sortByUser = addConfig("sort_by_user", configTypeBool, true);
     public static ConfigItem sortByContacts = addConfig("sort_by_contacts", configTypeBool, true);
+    public static ConfigItem sortByName = addConfig("sort_by_name", configTypeBool, false);
+    public static ConfigItem sortByOldest = addConfig("sort_by_oldest", configTypeBool, false);
 
     public static ConfigItem disableUndo = addConfig("DisableUndo", configTypeBool, false);
 
@@ -401,6 +403,11 @@ public class NekoConfig {
             sortByUser.setConfigBool(preferences.getBoolean("sort_by_user", true));
         if (preferences.contains("sort_by_contacts"))
             sortByContacts.setConfigBool(preferences.getBoolean("sort_by_contacts", true));
+
+        if (preferences.contains("sort_by_name"))
+            sortByName.setConfigBool(preferences.getBoolean("sort_by_name", false));
+        if (preferences.contains("sort_by_oldest"))
+            sortByOldest.setConfigBool(preferences.getBoolean("sort_by_oldest", false));
 
         if (preferences.contains("disable_undo"))
             disableUndo.setConfigBool(preferences.getBoolean("disable_undo", false));
