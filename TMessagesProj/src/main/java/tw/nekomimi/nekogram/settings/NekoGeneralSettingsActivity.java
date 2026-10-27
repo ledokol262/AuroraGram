@@ -204,6 +204,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
             add(new ConfigCellTextCheck(NekoConfig.sortByOldest, null, LocaleController.getString(R.string.SortOldestFirst)));
         }}));
     }));
+    private final AbstractConfigCell threeLinesLayoutRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.useThreeLinesLayout, null, LocaleController.getString(R.string.ThreeLinesChatList)));
     private final AbstractConfigCell mediaPreviewRow = cellGroup.appendCell(new ConfigCellTextCheck(NekoConfig.mediaPreview));
     private final AbstractConfigCell showUserIconsInChatsListRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getShowUserIconsInChatsList()));
     private final AbstractConfigCell disableCommunityChatGroupingRow = cellGroup.appendCell(new ConfigCellTextCheck(NaConfig.INSTANCE.getDisableCommunityChatGrouping()));
@@ -352,6 +353,7 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
     public boolean onFragmentCreate() {
         super.onFragmentCreate();
 
+        NekoConfig.useThreeLinesLayout.setConfigBool(SharedConfig.useThreeLinesLayout);
         updateRows();
 
         return true;
@@ -475,7 +477,9 @@ private final AbstractConfigCell defaultHlsVideoQualityRow = cellGroup.appendCel
 
         // Cells: Set OnSettingChanged Callbacks
         cellGroup.callBackSettingsChanged = (key, newValue) -> {
-            if (key.equals(NekoConfig.sortByName.getKey()) || key.equals(NekoConfig.sortByOldest.getKey())) {
+            if (key.equals(NekoConfig.useThreeLinesLayout.getKey())) {
+                SharedConfig.setUseThreeLinesLayout((boolean) newValue);
+            } else if (key.equals(NekoConfig.sortByName.getKey()) || key.equals(NekoConfig.sortByOldest.getKey())) {
                 for (int account : SharedConfig.activeAccounts) {
                     if (UserConfig.getInstance(account).isClientActivated()) {
                         MessagesController.getInstance(account).sortDialogs(null);
