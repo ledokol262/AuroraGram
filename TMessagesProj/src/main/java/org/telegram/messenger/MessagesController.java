@@ -22805,7 +22805,11 @@ public class MessagesController extends BaseController implements NotificationCe
                 dialogs.clear();
                 dialogsForward.clear();
                 try {
-                    Collections.sort(allDialogs, dialogDateComparator);
+                    if (NekoConfig.sortByName.Bool()) {
+                        Collections.sort(allDialogs, dialogComparator);
+                    } else {
+                        Collections.sort(allDialogs, dialogDateComparator);
+                    }
                 } catch (Exception e) {
                     FileLog.e(e);
                 }
