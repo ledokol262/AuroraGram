@@ -115,11 +115,6 @@ jobs:
           APK=$(find TMessagesProj/build/outputs/apk -name '*arm64-v8a*.apk')
           APK=$(dirname $APK)
           echo "APK=$APK" >> $GITHUB_ENV
-      - name: Upload gradle.properties
-        uses: actions/upload-artifact@v7
-        with:
-          name: gradle-properties
-          path: gradle.properties
       - uses: actions/upload-artifact@v7
         with:
           name: Release
@@ -134,14 +129,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Remove gradle.properties
-        run: |
-          rm -f gradle.properties
-      - name: Download gradle.properties
-        uses: actions/download-artifact@v8
-        with:
-          name: gradle-properties
-          path: .
       - name: Donwload Artifacts
         uses: actions/download-artifact@v8
         with:
