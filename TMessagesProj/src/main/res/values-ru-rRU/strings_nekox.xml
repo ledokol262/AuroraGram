@@ -87,6 +87,7 @@
     <string name="SortByUnmuted">Сначала со звуком</string>
     <string name="SortByUser">Сначала личные</string>
     <string name="SortByContacts">Сначала контакты</string>
+    <string name="SortedByName">По имени</string>
     <string name="NekoXPushService">Сервис уведомлений Nagram</string>
     <string name="EnablePushAlert">Включите сервис уведомлений</string>
     <string name="DisablePushAlert">Отключите сервис уведомлений</string>
