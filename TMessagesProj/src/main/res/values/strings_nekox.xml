@@ -81,6 +81,9 @@
     <string name="FilterNameUnmutedAndUnreadDescription">Only unread messages from unmuted chats</string>
     <string name="IgnoreMutedCount">Ignore muted unread count in folder tab</string>
     <string name="DialogsSettings">Dialogs Settings</string>
+    <string name="AuroraDialogListLayout">Chat list layout</string>
+    <string name="AuroraTwoLines">Two lines</string>
+    <string name="AuroraThreeLines">Three lines</string>
     <string name="SortMenu">Dialog Sort Settings</string>
     <string name="SortByUnread">Sort By Unread</string>
     <string name="SortByUnmuted">Sort By Unmuted</string>
