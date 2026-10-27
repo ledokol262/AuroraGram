@@ -13,7 +13,44 @@ on:
         description: 'Upload: If want ignore'
         required: false
 jobs:
+  signing-preflight:
+    name: Validate release signing configuration
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+      - name: Check signing inputs without exposing secrets
+        env:
+          LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
+        run: |
+          python3 - <<'PY'
+          import base64
+          import os
+          import sys
+
+          encoded = os.environ.get("LOCAL_PROPERTIES", "")
+          if not encoded.strip():
+              sys.exit("LOCAL_PROPERTIES secret is missing. Configure it with a Base64-encoded local.properties containing KEYSTORE_PASS, ALIAS_NAME, and ALIAS_PASS.")
+          try:
+              decoded = base64.b64decode(encoded, validate=True).decode("utf-8")
+          except Exception:
+              sys.exit("LOCAL_PROPERTIES is not valid Base64-encoded UTF-8 properties text.")
+          values = {}
+          for line in decoded.splitlines():
+              line = line.strip()
+              if not line or line.startswith(("#", "!")) or "=" not in line:
+                  continue
+              key, value = line.split("=", 1)
+              values[key.strip()] = value.strip()
+          missing = [key for key in ("KEYSTORE_PASS", "ALIAS_NAME", "ALIAS_PASS") if not values.get(key)]
+          if missing:
+              sys.exit("LOCAL_PROPERTIES is missing required signing properties: " + ", ".join(missing))
+          if not os.path.isfile("TMessagesProj/release.keystore"):
+              sys.exit("TMessagesProj/release.keystore is missing from the checkout.")
+          print("Release signing configuration is present; secret values were not printed.")
+          PY
   native:
+    needs: signing-preflight
     name: Native Build (Telegram)
     runs-on: ubuntu-latest
     strategy:
