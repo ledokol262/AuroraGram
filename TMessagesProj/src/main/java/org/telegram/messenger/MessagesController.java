@@ -1490,6 +1490,15 @@ public class MessagesController extends BaseController implements NotificationCe
             }
         }
 
+        if (NekoConfig.sortByName.Bool()) {
+            String name1 = DialogObject.getName(currentAccount, dialog1.id);
+            String name2 = DialogObject.getName(currentAccount, dialog2.id);
+            int nameComparison = name1.compareToIgnoreCase(name2);
+            if (nameComparison != 0) {
+                return nameComparison;
+            }
+        }
+
         boolean is1user = !DialogObject.isChannel(dialog1) && dialog1.id > 0;
         boolean is2user = !DialogObject.isChannel(dialog2) && dialog2.id > 0;
 
