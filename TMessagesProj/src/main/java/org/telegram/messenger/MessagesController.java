@@ -22813,7 +22813,7 @@ public class MessagesController extends BaseController implements NotificationCe
                 dialogs.clear();
                 dialogsForward.clear();
                 try {
-                    if (NekoConfig.sortByName.Bool() || NekoConfig.sortByOldest.Bool()) {
+                    if (NekoConfig.sortByName.Bool() || NekoConfig.sortByOldest.Bool() || NekoConfig.sortByUnread.Bool() || NekoConfig.sortByUnmuted.Bool() || NekoConfig.sortByUser.Bool() || NekoConfig.sortByContacts.Bool()) {
                         Collections.sort(allDialogs, dialogComparator);
                     } else {
                         Collections.sort(allDialogs, dialogDateComparator);
